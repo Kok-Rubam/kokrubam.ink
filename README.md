@@ -36,7 +36,7 @@ site/                    # custom theme (added after initial setup)
 
 ## Data Source
 
-Dictionary authored by **Bishnu Charan Debbarma**. Data pipeline at [Kok-Rubam/kokrubam](https://github.com/Kok-Rubam/kokrubam).
+Dictionary authored by **Bishnu Charan Debbarma**.
 
 ## License
 
