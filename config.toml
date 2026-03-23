@@ -13,8 +13,8 @@ num_autocomplete_results = 10
 admin_username = "admin"
 admin_password = "changeme"
 
-# Dictionary pairs
-dicts = [["kokborok", "english"]]
+# Dictionary pairs (bidirectional: Kokborok→English and English→Kokborok)
+dicts = [["kokborok", "english"], ["english", "kokborok"]]
 
 [db]
 max_conns = 50
