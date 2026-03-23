@@ -1,0 +1,21 @@
+[Unit]
+Description=dictpress dictionary server (kokrubam.ink)
+After=network.target
+
+[Service]
+Type=simple
+User=dictpress
+Group=dictpress
+WorkingDirectory=/opt/dictpress
+ExecStart=/opt/dictpress/dictpress --db=/opt/dictpress/kokrubam.db --site=/opt/dictpress/site
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/dictpress
+PrivateTmp=true
+Environment=RUST_LOG=info
+
+[Install]
+WantedBy=multi-user.target

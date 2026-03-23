@@ -1,0 +1,68 @@
+# dictpress configuration for kokrubam — Kokborok-English Dictionary
+# See: https://github.com/knadh/dictpress
+
+[app]
+address = "127.0.0.1:9000"
+root_url = "https://kokrubam.ink"
+enable_pages = true
+enable_submissions = false
+enable_autocomplete = true
+num_autocomplete_results = 10
+
+# Admin credentials — CHANGE THIS before deploying!
+admin_username = "admin"
+admin_password = "changeme"
+
+# Dictionary pairs
+dicts = [["kokborok", "english"]]
+
+[db]
+max_conns = 50
+
+[cache]
+enabled = true
+ttl = "72h"
+mode = "memory"
+max_memory_mb = 64
+
+[api_results]
+per_page = 20
+max_per_page = 50
+
+[site_results]
+per_page = 20
+max_per_page = 50
+num_page_nums = 10
+max_entry_relations_per_type = 10
+max_entry_content_items = 10
+
+[glossary]
+enabled = true
+default_per_page = 100
+max_per_page = 100
+num_page_nums = 10
+
+# Languages
+[lang.kokborok]
+name = "Kokborok"
+tokenizer = "default:simple"
+
+[lang.kokborok.types]
+noun = "Noun"
+verb = "Verb"
+adjective = "Adjective"
+adverb = "Adverb"
+pronoun = "Pronoun"
+conjunction = "Conjunction"
+interjection = "Interjection"
+prefix = "Prefix"
+
+[lang.english]
+name = "English"
+tokenizer = "default:english"
+
+[lang.english.types]
+noun = "Noun"
+verb = "Verb"
+adjective = "Adjective"
+adverb = "Adverb"
