@@ -1,49 +1,93 @@
-<ol class="entries">
-    {% for entry in entries %}
-    <li class="entry">
-        <header class="entry-header">
-            <h3 class="headword">
-                <a href="/dictionary/kokborok/english/{{ entry.content[0] }}">{{ entry.content[0] }}</a>
-            </h3>
-            {% if entry.phones %}
-                <span class="phones">{% for p in entry.phones %}<span>{{ p }}</span> {% endfor %}</span>
-            {% endif %}
-        </header>
+{% set max_content_items = consts.site_max_content_items %}
+{% set num_results = results.entries | length %}
+{% if num_results > 10 %}{% set num_results = 10 %}{% endif %}
 
-        {% if entry.relations %}
-        <div class="definitions">
-            {% for rel in entry.relations %}
-            <div class="def-group">
-                {% if rel.types %}
-                    <span class="pos">{% for t in rel.types %}<em>{{ t }}</em> {% endfor %}</span>
+<div class="row">
+    <div class="eight columns">
+        <ol class="entries">
+            {% for r in results.entries | slice(end=num_results) %}
+            {% set shareGuid = "s" ~ r.guid | split(pat="-") | first %}
+            <li class="entry" id="{{ shareGuid }}" data-head="{{ r.content | join(sep=", ") }}" data-lang="{{ r.lang }}">
+                <header class="head">
+                    <div>
+                        <h3 class="title">{{ r.content | join(sep=", ") }}</h3>
+
+                        {% if r.phones and r.phones | length > 0 %}
+                            <span class="pronun">&#9834; {{ r.phones | join(sep=",") }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="meta">
+                        {% if r.tags and r.tags | length > 0 %}
+                            <span class="tags">
+                                {% for tag in r.tags %}
+                                    <span class="tag" {% if tag is starting_with("src:") %} title="{{ t(key="public.sourceTag") }}"{% endif %}>{{ tag }}</span>
+                                {% endfor %}
+                            </span>
+                        {% endif %}
+
+                        <div class="toolbar">
+                            {% if consts.enable_submissions %}
+                            <a href="#" data-edit-from="{{ r.guid }}" class="edit" title="{{ t(key="public.suggestEdit") }}"><img src="/static/edit.svg?v={{ asset_ver }}" alt="{{ t(key="public.suggestEdit") }}"></a>
+                            {% endif %}
+                            <a href="#{{ shareGuid }}" data-share-guid="{{ shareGuid }}" title="{{ t(key="public.shareLink") }}"><img src="/static/share.svg?v={{ asset_ver }}" alt="{{ t(key="public.shareLink") }}"></a>
+                        </div>
+                    </div>
+                </header>
+
+                {% if r.relations and r.relations | length > 0 %}
+                    {%- set_global last_type = "" -%}
+                    {%- for d in r.relations -%}
+                        {%- set types = d.relation.types | default(value=[]) | join(sep=", ") -%}
+
+                        {%- if last_type != types or loop.first -%}
+                            {% if not loop.first %}</ol>{% endif %}
+                            <ol class="defs">
+                                <li class="types">
+                                    {%- for t in d.relation.types | default(value=[]) -%}
+                                        {%- if t != "" -%}
+                                        <span>
+                                            {%- set type_label = langs[d.lang].types | get(key=t, default="") -%}
+                                            {%- if type_label %}{{ type_label }}
+                                            {%- else %}({{ t }}){% endif -%}
+                                        </span>
+                                        {%- endif -%}
+                                    {%- endfor -%}
+                                </li>
+                        {%- endif %}
+
+                        <li><div data-guid="{{ d.guid }}" class="def" data-lang="{{ d.lang }}">
+                            {{ d.content | join(sep=", ") }}
+                            {% if d.content_length > max_content_items or d.meta.synonyms %}
+                                <a href="#" class="more-toggle" data-id="{{ r.guid }}-{{ d.guid }}" title="{{ t(key="public.viewMore") }}"
+                                    data-entry-guid="{{ d.guid }}" data-from-lang="{{ r.lang }}" data-to-lang="{{ d.lang }}"
+                                    role="button" aria-expanded="false" aria-controls="{{ r.guid }}-{{ d.guid }}">
+                                </a>
+                            {% endif %}
+                            {% if consts.enable_submissions %}
+                                <a href="#" data-edit-from="{{ r.guid }}" data-edit-to="{{ d.guid }}" class="edit" title="{{ t(key="public.suggestEdit") }}">
+                                    <img src="/static/edit.svg?v={{ asset_ver }}" alt="{{ t(key="public.suggestEdit") }}">
+                                </a>
+                            {% endif %}
+
+                            <div class="more" id="{{ r.guid }}-{{ d.guid }}" role="region" aria-hidden="true"></div>
+
+                        </div></li>
+                        {%- set_global last_type = types -%}
+                    {%- endfor -%}
+                    </ol>
                 {% endif %}
-                <ol class="defs">
-                    {% for c in rel.content %}
-                    <li>{{ c }}</li>
-                    {% endfor %}
-                </ol>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-    </li>
-    {% endfor %}
-</ol>
 
-{% if total_pages and total_pages > 1 %}
-<nav class="pagination">
-    {% if page > 1 %}
-        <a href="?q={{ query }}&page={{ page - 1 }}">&laquo; Prev</a>
-    {% endif %}
-    {% for p in page_nums %}
-        {% if p == page %}
-            <span class="current">{{ p }}</span>
-        {% else %}
-            <a href="?q={{ query }}&page={{ p }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+    <nav class="three columns col-offset-1 related">
+        {% if results.entries | length > num_results %}
+            <h3>{{ t(key="public.similarTitle") }}</h3>
+            {% for r in results.entries | slice(start=num_results) %}
+                <a href="{{ consts.root_url }}/dictionary/{{ r.lang }}/{{ r.lang }}/{{ r.content.0 | urlencode }}" class="word">{{ r.content.0 }}</a>
+            {% endfor %}
         {% endif %}
-    {% endfor %}
-    {% if page < total_pages %}
-        <a href="?q={{ query }}&page={{ page + 1 }}">Next &raquo;</a>
-    {% endif %}
-</nav>
-{% endif %}
+    </nav>
+</div>

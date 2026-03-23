@@ -1,44 +1,62 @@
 {% extends "base.html" %}
 
-{% block title %}About — kokrubam{% endblock %}
+{% block meta %}
+    <title>About — kokrubam</title>
+    <meta name="description" content="About the kokrubam Kokborok-English dictionary" />
+{% endblock %}
 
 {% block content %}
-<div class="about">
-    <h2>About kokrubam</h2>
+<section class="content about page">
+    <h1>About</h1>
 
-    <p><strong>kokrubam</strong> (kok rubam) is the Kokborok word for "dictionary" &mdash;
-    from <em>kok</em> (word, language) + <em>rubam</em> (collection, arrangement).</p>
+    <p>
+        <strong>kokrubam</strong> (kok rubam) is the Kokborok word for "dictionary" &mdash;
+        from <em>kok</em> (word, language) + <em>rubam</em> (collection, arrangement).
+    </p>
 
     <h3>The Dictionary</h3>
-    <p>This is a digitized version of the comprehensive <strong>Kokborok-English Dictionary</strong>
-    authored by <strong>Bishnu Charan Debbarma</strong>. The original dictionary was written using
-    BanglaWord, a pre-Unicode word processor, and stored across 67 RTF files.</p>
-
-    <p>The dictionary contains over <strong>9,800 entries</strong> covering Kokborok vocabulary
-    with English definitions, parts of speech, pronunciation guides, cross-references,
-    and derived forms.</p>
+    <p>
+        This is a digitized version of the comprehensive <strong>Kokborok-English Dictionary</strong>
+        authored by <strong>Bishnu Charan Debbarma</strong>. The original dictionary was written using
+        BanglaWord, a pre-Unicode word processor, and stored across 67 RTF files.
+    </p>
+    <p>
+        The dictionary contains over <strong>9,800 entries</strong> covering Kokborok vocabulary
+        with English definitions, parts of speech, pronunciation guides, cross-references,
+        and derived forms.
+    </p>
 
     <h3>Kokborok Language</h3>
-    <p><strong>Kokborok</strong> (also called Tripuri) is a Tibeto-Burman language spoken by
-    approximately 1 million people, primarily in the state of <strong>Tripura</strong> in
-    northeast India. Its ISO 639-3 code is <code>trp</code>.</p>
-
-    <p>The name "Kokborok" itself means "language of the people" &mdash;
-    <em>kok</em> (language) + <em>borok</em> (people, human).</p>
+    <p>
+        <strong>Kokborok</strong> (also called Tripuri) is a Tibeto-Burman language spoken by
+        approximately 1 million people, primarily in the state of <strong>Tripura</strong> in
+        northeast India. Its ISO 639-3 code is <code>trp</code>.
+    </p>
+    <p>
+        The name "Kokborok" itself means "language of the people" &mdash;
+        <em>kok</em> (language) + <em>borok</em> (people, human).
+    </p>
 
     <h3>Open Source</h3>
     <p>This project is open source under the GPL v3 license.</p>
     <ul>
-        <li><a href="https://github.com/Kok-Rubam/kokrubam.ink" target="_blank">Website source</a> (deployment, theme)</li>
-        <li><a href="https://github.com/Kok-Rubam/kokrubam" target="_blank">Data pipeline</a> (RTF parser, dictionary extraction)</li>
+        <li><a href="https://github.com/Kok-Rubam/kokrubam.ink">Website source</a> (deployment, theme)</li>
+        <li><a href="https://github.com/Kok-Rubam/kokrubam">Data pipeline</a> (RTF parser, dictionary extraction)</li>
     </ul>
 
-    <p>Built with <a href="https://github.com/knadh/dictpress" target="_blank">dictpress</a>,
-    the same platform that powers <a href="https://alar.ink" target="_blank">Alar</a> (Kannada-English)
-    and <a href="https://olam.in" target="_blank">Olam</a> (English-Malayalam).</p>
+    <hr />
+
+    <h3>Website</h3>
+    <p>
+        This website is built with <a href="https://github.com/knadh/dictpress">dictpress</a>,
+        the same platform that powers <a href="https://alar.ink">Alar</a> (Kannada-English)
+        and <a href="https://olam.in">Olam</a> (English-Malayalam).
+    </p>
 
     <h3>Attribution</h3>
-    <p>Dictionary authored by <strong>Bishnu Charan Debbarma</strong>.<br/>
-    Digital conversion and web platform by the kokrubam project.</p>
-</div>
+    <p>
+        Dictionary authored by <strong>Bishnu Charan Debbarma</strong>.<br />
+        Digital conversion and web platform by the kokrubam project.
+    </p>
+</section>
 {% endblock %}

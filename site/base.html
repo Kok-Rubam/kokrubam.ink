@@ -1,49 +1,102 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>{% block title %}kokrubam — Kokborok-English Dictionary{% endblock %}</title>
-    <meta name="description" content="{% block description %}kokrubam — Free and open source Kokborok-English dictionary by Bishnu Charan Debbarma{% endblock %}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1a6b3c" />
-    <link rel="stylesheet" href="/static/style.css" />
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  {% block meta %}
+    <title>
+      {%- if page_type == "/" %} {{ t(key="global.siteTitle") }}
+      {%- elif page_type == "glossary" %}{{ ts(key="public.glossaryTitle", lang=from_lang_name) }} - {{ t(key="global.siteName") }}
+      {%- elif page_type == "search" %}{{ ts(key="public.searchTitle", query=query, to_lang=to_lang_name | lower) }} - {{ t(key="global.siteName") }}
+      {%- elif title %}{{ title }} - {{ t(key="global.siteName") }}
+      {%- endif -%}
+    </title>
+    <meta name="description" value="
+      {%- if page_type == "/" %}{{ t(key="public.mainTitle") }}
+      {%- elif page_type == "glossary" %}{{ ts(key="public.glossaryTitle", lang=from_lang_name) }}
+      {%- elif page_type == "search" %}{{ ts(key="public.searchDescription", from_lang=from_lang_name, query=query, to_lang=to_lang_name) }}
+      {%- elif description %}{{ description }}
+      {%- else %}{% block description %}{% endblock %}
+      {%- endif -%}" />
+  {% endblock %}
+  <meta property="og:image" content="{{ consts.root_url | safe }}/static/thumb.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <script>
+    window._ROOT_URL = "{{ consts.root_url | safe }}";
+    window._MAX_CONTENT_ITEMS = {{ consts.site_max_content_items }};
+  </script>
+  <link rel="shortcut icon" href="/static/favicon.png?v={{ asset_ver }}" type="image/x-icon" />
+  <link href="/static/flexit.css?v={{ asset_ver }}" rel="stylesheet" type="text/css" />
+  <link href="/static/style.css?v={{ asset_ver }}" rel="stylesheet" type="text/css" />
 </head>
-<body>
-    <div class="wrap {% block bodyclass %}{% endblock %}">
-        <header>
-            <div class="logo-area">
-                <a href="/" class="logo" title="kokrubam: Kokborok-English dictionary">
-                    <span class="logo-text">kokrubam</span>
-                </a>
-                <div class="taglines">
-                    <p>Kokborok-English Dictionary</p>
-                    <p class="sub">By Bishnu Charan Debbarma</p>
-                </div>
+<body class="{% if page_type == "/" %}home{% endif %}">
+<div class="container">
+  <section class="main">
+    <header class="header">
+      <div class="row">
+        <div class="logo four columns">
+          <a href="/"><img src="/static/logo.svg?v={{ asset_ver }}" alt="{{ t(key="global.siteName") }}" /></a>
+          <h3 class="intro">
+            {{ t(key="public.subTitle") }}
+          </h3>
+        </div><!-- logo col -->
+
+        <div class="search eight columns">
+          <form class="search-form" method="get" action="">
+            <div>
+              <select name="lang" aria-label="{{ t(key="public.selectDict") }}">
+                {% for d in dicts -%}
+                  {%- set from = d.0 -%}
+                  {%- set to = d.1 -%}
+                  <option value="{{ from.id }}/{{ to.id }}">{{ from.name }} - {{ to.name }}</option>
+                {% endfor -%}
+              </select>
+              <div class="input-group">
+                <input autofocus autocomplete="off" required placeholder="" aria-label="{{ t(key="public.searchWord") }}"
+                  type="text" id="q" name="q" value="{{ query | default(value="") }}" />
+                <button type="submit" aria-label="{{ t(key="global.btnSearch") }}"><img src="/static/search.svg?v={{ asset_ver }}" alt="{{ t(key="global.btnSearch") }}" /></button>
+              </div>
             </div>
+          </form>
+        </div>
+      </div>
+    </header>
 
-            <form class="search-form" action="/dictionary/kokborok/english" method="get">
-                <div class="search-input">
-                    <input type="search" name="q" value="{{ query | default(value='') }}"
-                        placeholder="Search Kokborok words..."
-                        autofocus />
-                    <button type="submit" class="search-btn">Search</button>
-                </div>
-            </form>
-        </header>
+    {%- block content %}{% endblock -%}
 
-        {% block content %}{% endblock %}
+    <nav class="nav">
+      {% if consts.enable_submissions %}
+        <a href="{{ consts.root_url | safe }}/submit">{{ t(key="public.submitEntry") }}</a>
+      {% endif %}
+      {% if consts.enable_glossary %}
+        {%- for d in dicts %}
+          {%- set from = d.0 -%}
+          {%- set to = d.1 -%}
+          <a href="{{ consts.root_url | safe }}/glossary/{{ from.id }}/{{ to.id }}/*" class="tab">
+            {{ ts(key="public.glossary", lang=from.name) }}
+          </a>
+        {% endfor -%}
+      {% endif %}
+    </nav>
+  </section>
 
-        <nav class="nav">
-            <a href="/">Home</a>
-            <a href="/glossary/kokborok/english/A">Glossary</a>
-            <a href="/page/about">About</a>
-        </nav>
+  <footer class="footer">
+    <a href="https://dict.press">Powered by dictpress</a>
+  </footer>
+</div><!-- container -->
 
-        <footer>
-            <p>Dictionary by <strong>Bishnu Charan Debbarma</strong>.</p>
-            <p>Built with <a href="https://github.com/knadh/dictpress" target="_blank">dictpress</a>.
-               Source on <a href="https://github.com/Kok-Rubam/kokrubam.ink" target="_blank">GitHub</a>.</p>
-        </footer>
-    </div>
+<form class="box form-comments" data-success="{{ t(key="public.suggestSubmitted") }}">
+<div>
+  <h4>{{ t(key="public.submitTitle") }}</h4>
+  <textarea name="comments" autofocus maxlength="500"></textarea>
+  <div class="buttons">
+    <button type="submit">{{ t(key="public.suggestSubmitBtn") }}</button>
+    <button class="button-outline close">{{ t(key="global.btnClose") }}</button>
+  </div>
+</div>
+</form>
+
+<script type="module" src="/static/_bundle.js?f=autocomp.js&f=main.js&v={{ asset_ver }}"></script>
 </body>
 </html>

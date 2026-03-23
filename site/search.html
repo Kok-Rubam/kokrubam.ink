@@ -1,17 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}{{ query }} — Kokborok to English — kokrubam{% endblock %}
-
 {% block content %}
-<div class="results-area">
-    {% if entries | length > 0 %}
-        {% include "results.html" %}
+<section class="content results">
+    {% if not results.entries or results.entries | length == 0 %}
+        <h2>{{ t(key="public.noResultsTitle") }}</h2>
+        <p>
+            {{ t(key="public.noResults") }}
+        </p>
     {% else %}
-        <div class="no-results">
-            <h2>No results found</h2>
-            <p>No matches for <strong>"{{ query }}"</strong>.</p>
-            <p>Make sure the search query is a Kokborok word. Try browsing the <a href="/glossary/kokborok/english/A">glossary</a>.</p>
-        </div>
+        {% include "results.html" %}
     {% endif %}
-</div>
+</section>
 {% endblock %}

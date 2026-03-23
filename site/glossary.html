@@ -1,39 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}{{ initial }} — Kokborok glossary — kokrubam{% endblock %}
-
 {% block content %}
-<div class="glossary">
-    <h2>Glossary: {{ initial }}</h2>
+<section class="content glossary">
+    {% if not initials or initials | length == 0 %}
+        <h2>{{ t(key="public.glossaryTitle") }}</h2>
+        <p>{{ t(key="public.noResults") }}</p>
+    {% else %}
+        <nav class="index">
+            {% for a in initials %}
+            <a href="{{ consts.root_url }}/glossary/{{ glossary.from_lang }}/{{ glossary.to_lang }}/{{ a | urlencode }}"{% if a == initial %} class="sel"{% endif %}>{{ a }}</a>
+            {% endfor %}
+        </nav>
 
-    <div class="initials">
-        {% for i in initials %}
-            {% if i == initial %}
-                <span class="current">{{ i }}</span>
-            {% else %}
-                <a href="/glossary/kokborok/english/{{ i }}">{{ i }}</a>
-            {% endif %}
-        {% endfor %}
-    </div>
+        <nav class="pagination top">{% include "pagination.html" %}</nav>
 
-    {% include "glossary-words.html" %}
+        {% include "glossary-words.html" %}
 
-    {% if total_pages and total_pages > 1 %}
-    <nav class="pagination">
-        {% if page > 1 %}
-            <a href="/glossary/kokborok/english/{{ initial }}?page={{ page - 1 }}">&laquo; Prev</a>
-        {% endif %}
-        {% for p in page_nums %}
-            {% if p == page %}
-                <span class="current">{{ p }}</span>
-            {% else %}
-                <a href="/glossary/kokborok/english/{{ initial }}?page={{ p }}">{{ p }}</a>
-            {% endif %}
-        {% endfor %}
-        {% if page < total_pages %}
-            <a href="/glossary/kokborok/english/{{ initial }}?page={{ page + 1 }}">Next &raquo;</a>
-        {% endif %}
-    </nav>
+        <nav class="pagination bottom">{% include "pagination.html" %}</nav>
     {% endif %}
-</div>
+</section>
 {% endblock %}
