@@ -1,0 +1,7 @@
+{{ define "glossary-words" }}
+<div class="word-list">
+    {{ range .Data.Entries }}
+        <a href="/dictionary/kokborok/english/{{ index .Content 0 }}" class="word">{{ index .Content 0 }}</a>
+    {{ end }}
+</div>
+{{ end }}

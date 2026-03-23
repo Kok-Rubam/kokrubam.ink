@@ -1,0 +1,39 @@
+{{ define "glossary" }}
+{{ template "header" . }}
+
+<div class="glossary">
+    <h2>Glossary: {{ .Data.GlossaryInitial }}</h2>
+
+    <div class="initials">
+        {{ range .Data.Initials }}
+            {{ if eq . $.Data.GlossaryInitial }}
+                <span class="current">{{ . }}</span>
+            {{ else }}
+                <a href="/glossary/kokborok/english/{{ . }}">{{ . }}</a>
+            {{ end }}
+        {{ end }}
+    </div>
+
+    {{ template "glossary-words" . }}
+
+    {{ if .Data.TotalPages }}
+    <nav class="pagination">
+        {{ if gt .Data.Page 1 }}
+            <a href="/glossary/kokborok/english/{{ .Data.GlossaryInitial }}?page={{ sub .Data.Page 1 }}">&laquo; Prev</a>
+        {{ end }}
+        {{ range .Data.PageNums }}
+            {{ if eq . $.Data.Page }}
+                <span class="current">{{ . }}</span>
+            {{ else }}
+                <a href="/glossary/kokborok/english/{{ $.Data.GlossaryInitial }}?page={{ . }}">{{ . }}</a>
+            {{ end }}
+        {{ end }}
+        {{ if lt .Data.Page .Data.TotalPages }}
+            <a href="/glossary/kokborok/english/{{ .Data.GlossaryInitial }}?page={{ add .Data.Page 1 }}">Next &raquo;</a>
+        {{ end }}
+    </nav>
+    {{ end }}
+</div>
+
+{{ template "footer" . }}
+{{ end }}

@@ -1,0 +1,5 @@
+/* flexit.css - minimal flexbox grid */
+*, *::before, *::after { box-sizing: border-box; }
+.row { display: flex; flex-wrap: wrap; margin: 0 -10px; }
+.row > * { padding: 0 10px; }
+.columns { flex: 1; }

@@ -1,0 +1,51 @@
+{{ define "results" }}
+<ol class="entries">
+    {{ range .Data.Entries }}
+    <li class="entry">
+        <header class="entry-header">
+            <h3 class="headword">
+                <a href="/dictionary/kokborok/english/{{ index .Content 0 }}">{{ index .Content 0 }}</a>
+            </h3>
+            {{ if .Phones }}
+                <span class="phones">{{ range .Phones }}<span>{{ . }}</span>{{ end }}</span>
+            {{ end }}
+        </header>
+
+        {{ if .Relations }}
+        <div class="definitions">
+            {{ range .Relations }}
+            <div class="def-group">
+                {{ if .Types }}
+                    <span class="pos">{{ range .Types }}<em>{{ . }}</em>{{ end }}</span>
+                {{ end }}
+                <ol class="defs">
+                    {{ range .Content }}
+                    <li>{{ . }}</li>
+                    {{ end }}
+                </ol>
+            </div>
+            {{ end }}
+        </div>
+        {{ end }}
+    </li>
+    {{ end }}
+</ol>
+
+{{ if .Data.TotalPages }}
+<nav class="pagination">
+    {{ if gt .Data.Page 1 }}
+        <a href="?q={{ .Data.Query }}&page={{ sub .Data.Page 1 }}">&laquo; Prev</a>
+    {{ end }}
+    {{ range .Data.PageNums }}
+        {{ if eq . $.Data.Page }}
+            <span class="current">{{ . }}</span>
+        {{ else }}
+            <a href="?q={{ $.Data.Query }}&page={{ . }}">{{ . }}</a>
+        {{ end }}
+    {{ end }}
+    {{ if lt .Data.Page .Data.TotalPages }}
+        <a href="?q={{ .Data.Query }}&page={{ add .Data.Page 1 }}">Next &raquo;</a>
+    {{ end }}
+</nav>
+{{ end }}
+{{ end }}

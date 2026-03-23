@@ -1,0 +1,17 @@
+{{ define "search" }}
+{{ template "header" . }}
+
+<div class="results-area">
+    {{ if .Data.Entries }}
+        {{ template "results" . }}
+    {{ else }}
+        <div class="no-results">
+            <h2>No results found</h2>
+            <p>No matches for <strong>"{{ .Data.Query }}"</strong>.</p>
+            <p>Make sure the search query is a Kokborok word. Try browsing the <a href="/glossary/kokborok/english/A">glossary</a>.</p>
+        </div>
+    {{ end }}
+</div>
+
+{{ template "footer" . }}
+{{ end }}
