@@ -1,8 +1,8 @@
 # kokrubam.ink
 
-Kokborok-English dictionary website powered by [dictpress](https://github.com/knadh/dictpress).
+**[kokrubam.ink](https://kokrubam.ink)** — Kokborok-English dictionary website powered by [dictpress](https://github.com/knadh/dictpress).
 
-**kokrubam** (kok rubam) is the Kokborok word for "dictionary" — from *kok* (word) + *rubam* (collection).
+**kokrubam** (ককরুবম) is the Kokborok word for "dictionary" — from *kok* (word) + *rubam* (collection).
 
 ## Quick Deploy
 
@@ -40,4 +40,4 @@ Dictionary authored by **Bishnu Charan Debbarma**. Data pipeline at [Kok-Rubam/k
 
 ## License
 
-GPL v3
+[MIT](LICENSE)
