@@ -1,6 +1,8 @@
-{{ define "page-about" }}
-{{ template "header" . }}
+{% extends "base.html" %}
 
+{% block title %}About — kokrubam{% endblock %}
+
+{% block content %}
 <div class="about">
     <h2>About kokrubam</h2>
 
@@ -39,6 +41,4 @@
     <p>Dictionary authored by <strong>Bishnu Charan Debbarma</strong>.<br/>
     Digital conversion and web platform by the kokrubam project.</p>
 </div>
-
-{{ template "footer" . }}
-{{ end }}
+{% endblock %}

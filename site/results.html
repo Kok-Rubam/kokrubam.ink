@@ -1,51 +1,49 @@
-{{ define "results" }}
 <ol class="entries">
-    {{ range .Data.Entries }}
+    {% for entry in entries %}
     <li class="entry">
         <header class="entry-header">
             <h3 class="headword">
-                <a href="/dictionary/kokborok/english/{{ index .Content 0 }}">{{ index .Content 0 }}</a>
+                <a href="/dictionary/kokborok/english/{{ entry.content[0] }}">{{ entry.content[0] }}</a>
             </h3>
-            {{ if .Phones }}
-                <span class="phones">{{ range .Phones }}<span>{{ . }}</span>{{ end }}</span>
-            {{ end }}
+            {% if entry.phones %}
+                <span class="phones">{% for p in entry.phones %}<span>{{ p }}</span> {% endfor %}</span>
+            {% endif %}
         </header>
 
-        {{ if .Relations }}
+        {% if entry.relations %}
         <div class="definitions">
-            {{ range .Relations }}
+            {% for rel in entry.relations %}
             <div class="def-group">
-                {{ if .Types }}
-                    <span class="pos">{{ range .Types }}<em>{{ . }}</em>{{ end }}</span>
-                {{ end }}
+                {% if rel.types %}
+                    <span class="pos">{% for t in rel.types %}<em>{{ t }}</em> {% endfor %}</span>
+                {% endif %}
                 <ol class="defs">
-                    {{ range .Content }}
-                    <li>{{ . }}</li>
-                    {{ end }}
+                    {% for c in rel.content %}
+                    <li>{{ c }}</li>
+                    {% endfor %}
                 </ol>
             </div>
-            {{ end }}
+            {% endfor %}
         </div>
-        {{ end }}
+        {% endif %}
     </li>
-    {{ end }}
+    {% endfor %}
 </ol>
 
-{{ if .Data.TotalPages }}
+{% if total_pages and total_pages > 1 %}
 <nav class="pagination">
-    {{ if gt .Data.Page 1 }}
-        <a href="?q={{ .Data.Query }}&page={{ sub .Data.Page 1 }}">&laquo; Prev</a>
-    {{ end }}
-    {{ range .Data.PageNums }}
-        {{ if eq . $.Data.Page }}
-            <span class="current">{{ . }}</span>
-        {{ else }}
-            <a href="?q={{ $.Data.Query }}&page={{ . }}">{{ . }}</a>
-        {{ end }}
-    {{ end }}
-    {{ if lt .Data.Page .Data.TotalPages }}
-        <a href="?q={{ .Data.Query }}&page={{ add .Data.Page 1 }}">Next &raquo;</a>
-    {{ end }}
+    {% if page > 1 %}
+        <a href="?q={{ query }}&page={{ page - 1 }}">&laquo; Prev</a>
+    {% endif %}
+    {% for p in page_nums %}
+        {% if p == page %}
+            <span class="current">{{ p }}</span>
+        {% else %}
+            <a href="?q={{ query }}&page={{ p }}">{{ p }}</a>
+        {% endif %}
+    {% endfor %}
+    {% if page < total_pages %}
+        <a href="?q={{ query }}&page={{ page + 1 }}">Next &raquo;</a>
+    {% endif %}
 </nav>
-{{ end }}
-{{ end }}
+{% endif %}

@@ -1,28 +1,15 @@
-{{ define "header" }}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    {{ if .Data.GlossaryInitial }}
-        <title>{{ .Data.GlossaryInitial }} — Kokborok glossary — kokrubam</title>
-        <meta name="description" content="Kokborok-English word glossary and dictionary" />
-    {{ else if .Data.Query }}
-        <title>{{ .Data.Query }} — Kokborok to English meaning — kokrubam</title>
-        <meta name="description" content="Free Kokborok-English dictionary" />
-    {{ else }}
-        <title>kokrubam — Kokborok-English Dictionary</title>
-        <meta name="description" content="kokrubam (kok rubam) — Free and open source Kokborok-English dictionary by Bishnu Charan Debbarma" />
-    {{ end }}
-
+    <title>{% block title %}kokrubam — Kokborok-English Dictionary{% endblock %}</title>
+    <meta name="description" content="{% block description %}kokrubam — Free and open source Kokborok-English dictionary by Bishnu Charan Debbarma{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#1a6b3c" />
-
-    <link rel="icon" type="image/png" href="/static/favicon.png" />
-    <link rel="stylesheet" href="/static/flexit.css" />
     <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <div class="wrap {{ if not .Data.Query }}{{ if not .Data.GlossaryInitial }}home{{ end }}{{ end }}">
+    <div class="wrap {% block bodyclass %}{% endblock %}">
         <header>
             <div class="logo-area">
                 <a href="/" class="logo" title="kokrubam: Kokborok-English dictionary">
@@ -36,18 +23,16 @@
 
             <form class="search-form" action="/dictionary/kokborok/english" method="get">
                 <div class="search-input">
-                    <input type="search" name="q" value="{{ .Data.Query }}"
+                    <input type="search" name="q" value="{{ query | default(value='') }}"
                         placeholder="Search Kokborok words..."
                         autofocus />
-                    <button type="submit" class="search-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                    </button>
+                    <button type="submit" class="search-btn">Search</button>
                 </div>
             </form>
         </header>
-{{ end }}
 
-{{ define "footer" }}
+        {% block content %}{% endblock %}
+
         <nav class="nav">
             <a href="/">Home</a>
             <a href="/glossary/kokborok/english/A">Glossary</a>
@@ -62,4 +47,3 @@
     </div>
 </body>
 </html>
-{{ end }}

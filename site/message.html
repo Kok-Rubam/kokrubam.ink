@@ -1,10 +1,10 @@
-{{ define "message" }}
-{{ template "header" . }}
+{% extends "base.html" %}
 
+{% block title %}{{ title }} — kokrubam{% endblock %}
+
+{% block content %}
 <div class="message">
-    <h2>{{ .Data.Title }}</h2>
-    <p>{{ .Data.Description }}</p>
+    <h2>{{ title }}</h2>
+    <p>{{ description }}</p>
 </div>
-
-{{ template "footer" . }}
-{{ end }}
+{% endblock %}

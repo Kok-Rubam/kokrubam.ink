@@ -1,17 +1,17 @@
-{{ define "search" }}
-{{ template "header" . }}
+{% extends "base.html" %}
 
+{% block title %}{{ query }} — Kokborok to English — kokrubam{% endblock %}
+
+{% block content %}
 <div class="results-area">
-    {{ if .Data.Entries }}
-        {{ template "results" . }}
-    {{ else }}
+    {% if entries | length > 0 %}
+        {% include "results.html" %}
+    {% else %}
         <div class="no-results">
             <h2>No results found</h2>
-            <p>No matches for <strong>"{{ .Data.Query }}"</strong>.</p>
+            <p>No matches for <strong>"{{ query }}"</strong>.</p>
             <p>Make sure the search query is a Kokborok word. Try browsing the <a href="/glossary/kokborok/english/A">glossary</a>.</p>
         </div>
-    {{ end }}
+    {% endif %}
 </div>
-
-{{ template "footer" . }}
-{{ end }}
+{% endblock %}

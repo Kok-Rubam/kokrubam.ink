@@ -1,39 +1,39 @@
-{{ define "glossary" }}
-{{ template "header" . }}
+{% extends "base.html" %}
 
+{% block title %}{{ initial }} — Kokborok glossary — kokrubam{% endblock %}
+
+{% block content %}
 <div class="glossary">
-    <h2>Glossary: {{ .Data.GlossaryInitial }}</h2>
+    <h2>Glossary: {{ initial }}</h2>
 
     <div class="initials">
-        {{ range .Data.Initials }}
-            {{ if eq . $.Data.GlossaryInitial }}
-                <span class="current">{{ . }}</span>
-            {{ else }}
-                <a href="/glossary/kokborok/english/{{ . }}">{{ . }}</a>
-            {{ end }}
-        {{ end }}
+        {% for i in initials %}
+            {% if i == initial %}
+                <span class="current">{{ i }}</span>
+            {% else %}
+                <a href="/glossary/kokborok/english/{{ i }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
     </div>
 
-    {{ template "glossary-words" . }}
+    {% include "glossary-words.html" %}
 
-    {{ if .Data.TotalPages }}
+    {% if total_pages and total_pages > 1 %}
     <nav class="pagination">
-        {{ if gt .Data.Page 1 }}
-            <a href="/glossary/kokborok/english/{{ .Data.GlossaryInitial }}?page={{ sub .Data.Page 1 }}">&laquo; Prev</a>
-        {{ end }}
-        {{ range .Data.PageNums }}
-            {{ if eq . $.Data.Page }}
-                <span class="current">{{ . }}</span>
-            {{ else }}
-                <a href="/glossary/kokborok/english/{{ $.Data.GlossaryInitial }}?page={{ . }}">{{ . }}</a>
-            {{ end }}
-        {{ end }}
-        {{ if lt .Data.Page .Data.TotalPages }}
-            <a href="/glossary/kokborok/english/{{ .Data.GlossaryInitial }}?page={{ add .Data.Page 1 }}">Next &raquo;</a>
-        {{ end }}
+        {% if page > 1 %}
+            <a href="/glossary/kokborok/english/{{ initial }}?page={{ page - 1 }}">&laquo; Prev</a>
+        {% endif %}
+        {% for p in page_nums %}
+            {% if p == page %}
+                <span class="current">{{ p }}</span>
+            {% else %}
+                <a href="/glossary/kokborok/english/{{ initial }}?page={{ p }}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page < total_pages %}
+            <a href="/glossary/kokborok/english/{{ initial }}?page={{ page + 1 }}">Next &raquo;</a>
+        {% endif %}
     </nav>
-    {{ end }}
+    {% endif %}
 </div>
-
-{{ template "footer" . }}
-{{ end }}
+{% endblock %}
